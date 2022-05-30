@@ -5,9 +5,12 @@
 <head lang="ko">
   <meta charset="utf-8">
   <title>Database SQL</title>
+  <link rel="stylesheet" href="main.css">
 </head>
 <body>
+  <%@ include file="dbconn.jsp" %>
   <p>cnu cinema</p>
+  <table id="t1">
    <p>
      상영작품
      <select name="sort">
@@ -16,8 +19,35 @@
      </select>
      <%
      // 상영작품 불러오기
+     ResultSet rs = null;
+     Statement stmt = null;
+
+     String sql = "select 영화이름, 개봉일, 감독, 장르, 총상영시간, 관람등급 from 영화";
+     stmt = conn.createStatement();
+     rs = stmt.executeQuery(sql);
+
+     while(rs.next()){
+       String 영화이름 = rs.getString("영화이름");
+       String 개봉일 = rs.getString("개봉일");
+       String 감독 = rs.getString("감독");
+       String 장르 = rs.getString("장르");
+       String 총상영시간 = rs.getString("총상영시간");
+       String 관람등급 = rs.getString("관람등급");
+     %>
+       <tr>
+         <td><%=영화이름%></td>
+         <td><%=개봉일%></td>
+         <td><%=감독%></td>
+         <td><%=장르%></td>
+         <td><%=총상영시간%></td>
+         <td><%=관람등급%></td>
+       </tr>
+     <%
+      }
      %>
    </p>
+  </table>
+  <table id="t2">
    <p>
      상영예정작
      <select name="sort">
@@ -26,7 +56,31 @@
      </select>
      <%
      // 상영예정작 불러오기
+
+     sql = "select 영화이름, 개봉일, 감독, 장르, 총상영시간, 관람등급 from 영화";
+     stmt = conn.createStatement();
+     rs = stmt.executeQuery(sql);
+
+     while(rs.next()){
+       String 영화이름 = rs.getString("영화이름");
+       String 개봉일 = rs.getString("개봉일");
+       String 감독 = rs.getString("감독");
+       String 장르 = rs.getString("장르");
+       String 총상영시간 = rs.getString("총상영시간");
+       String 관람등급 = rs.getString("관람등급");
+     %>
+       <tr>
+         <td><%=영화이름%></td>
+         <td><%=개봉일%></td>
+         <td><%=감독%></td>
+         <td><%=장르%></td>
+         <td><%=총상영시간%></td>
+         <td><%=관람등급%></td>
+       </tr>
+     <%
+      }
      %>
    </p>
+  </table>
 </body>
 </html>
