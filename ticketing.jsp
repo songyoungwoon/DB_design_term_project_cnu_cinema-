@@ -20,6 +20,7 @@
     String 총상영시간 = request.getParameter("총상영시간");
     String 관람등급 = request.getParameter("관람등급");
     String 지점 = request.getParameter("지점");
+    String 날짜 = request.getParameter("날짜");
     %>
 
     <!-- 지점 선택 시작 -->
@@ -46,7 +47,7 @@
     }
     %>
      </select>
-     <input type="submit" value="검색"></p>
+     날짜 : <input type="date" name="날짜" required> <input type="submit" value="검색"></p>
     </form>
     <!-- 지점 선택 끝 -->
 
@@ -54,7 +55,7 @@
     <table>
     <%
     // 해당 지점 영화 상영관 불러오기
-    if (지점 != null && 지점 != "선택"){
+    if (지점 != null && 지점 != "선택" && 날짜 != null){
       out.println(지점);
       sql = "select distinct 상영번호, 상영관이름, 상영날짜, 예매좌석수 from 상영정보 where 지점='"+지점+"' and 영화이름='"+영화이름+"' and  감독='"+감독+"'";
       stmt = conn.createStatement();
@@ -84,11 +85,7 @@
         %>
         <td>
           <form method="post" action="payment.jsp">
-           <input type="hidden" name="영화이름" value="<%=영화이름%>">
-           <input type="hidden" name="개봉일" value="<%=개봉일%>">
-           <input type="hidden" name="감독" value="<%=감독%>">
            <input type="hidden" name="상영번호" value="<%=상영번호%>">
-           <input type="hidden" name="예매가능좌석수" value="<%=예매가능좌석수%>">
            <input type="submit" value="예매">
           </form>
         </td>
