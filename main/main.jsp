@@ -8,14 +8,15 @@
   <link rel="stylesheet" href="main.css">
 </head>
 <body>
-  <%@ include file="dbconn.jsp" %>
+  <%@ include file="../dbconn.jsp" %>
   <p>cnu cinema</p>
+  <!-- 상영작품 불러오기 시작 -->
   <table id="t1">
    <p>
      상영작품
      <select name="sort">
        <option value="">개봉일순</option>
-       <option value="학생">예매순</option>
+       <option value="">예매순</option>
      </select>
      <%
      // 상영작품 불러오기
@@ -41,12 +42,23 @@
          <td><%=장르%></td>
          <td><%=총상영시간%></td>
          <td><%=관람등급%></td>
+         <td>
+           <form method="post" action="../ticketing.jsp">
+            <input type="hidden" name="영화이름" value="<%=영화이름%>">
+            <input type="hidden" name="개봉일" value="<%=개봉일%>">
+            <input type="hidden" name="감독" value="<%=감독%>">
+            <input type="submit" value="예매">
+           </form>
+           </td>
        </tr>
      <%
       }
      %>
    </p>
   </table>
+  <!-- 상영작품 불러오기 끝 -->
+
+  <!-- 상영예정작 불러오기 시작 -->
   <table id="t2">
    <p>
      상영예정작
@@ -69,7 +81,7 @@
        String 총상영시간 = rs.getString("총상영시간");
        String 관람등급 = rs.getString("관람등급");
      %>
-       <tr>
+       <tr onclick="location.href='../ticketing.jsp'">
          <td><%=영화이름%></td>
          <td><%=개봉일%></td>
          <td><%=감독%></td>
@@ -82,5 +94,7 @@
      %>
    </p>
   </table>
+  <!-- 상영예정작 불러오기 끝 -->
+
 </body>
 </html>

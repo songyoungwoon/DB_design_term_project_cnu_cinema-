@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*" %>
-<%@ include file="dbconn.jsp" %>
+<%@ include file="../dbconn.jsp" %>
 <%
   request.setCharacterEncoding("utf-8");
 
@@ -18,7 +18,7 @@
   if (conn != null) conn.close();
 
   if (pass == match_pass){
-    
+
   }
   else{
 
