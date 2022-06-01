@@ -56,19 +56,50 @@
     // 해당 지점 영화 상영관 불러오기
     if (지점 != null && 지점 != "선택"){
       out.println(지점);
-      sql = "select distinct 상영관이름, 상영날짜, 예매좌석수 from 상영정보 where 지점='"+지점+"' and 영화이름='"+영화이름+"' and  감독='"+감독+"'";
+      sql = "select distinct 상영번호, 상영관이름, 상영날짜, 예매좌석수 from 상영정보 where 지점='"+지점+"' and 영화이름='"+영화이름+"' and  감독='"+감독+"'";
       stmt = conn.createStatement();
       rs = stmt.executeQuery(sql);
       while(rs.next()){
         // 상영정보 하나씩 불러오기
+        String 상영번호 = rs.getString("상영번호");
         String 상영관이름 = rs.getString("상영관이름");
         String 상영날짜 = rs.getString("상영날짜");
         String 예매좌석수 = rs.getString("예매좌석수");
+        String 총좌석수 = "";
+        String sql2 = "select 총좌석수 from 상영관 where 지점='"+지점+"' and 상영관이름='"+상영관이름+"'";
+        Statement stmt2 = conn.createStatement();
+        ResultSet rs2 = stmt2.executeQuery(sql2);
+        while(rs2.next()){
+         총좌석수 = rs2.getString("총좌석수");
+      }
       %>
       <tr>
         <td><%=상영관이름%></td>
         <td><%=상영날짜%></td>
         <td><%=예매좌석수%></td>
+        <td><%=총좌석수%></td>
+        <%
+        int 예매가능좌석수 = Integer.parseInt(총좌석수) - Integer.parseInt(예매좌석수);
+        if (예매가능좌석수 > 0){
+        %>
+        <td>
+          <form method="post" action="payment.jsp">
+           <input type="hidden" name="영화이름" value="<%=영화이름%>">
+           <input type="hidden" name="개봉일" value="<%=개봉일%>">
+           <input type="hidden" name="감독" value="<%=감독%>">
+           <input type="hidden" name="상영번호" value="<%=상영번호%>">
+           <input type="hidden" name="예매가능좌석수" value="<%=예매가능좌석수%>">
+           <input type="submit" value="예매">
+          </form>
+        </td>
+        <%
+        }
+        else{
+        %>
+        <p>매진</p>
+        <%
+        }
+        %>
       </tr>
       <%
       }
