@@ -45,12 +45,12 @@
   결제금액 -= Integer.parseInt(포인트);
 
   // todo 예매 가능 매수 계산
-  
+
 
   if (Integer.parseInt(현금) >= 결제금액){
       // 예매 완료
       Date nowTime = new Date();
-      SimpleDateFormat sf = new SimpleDateFormat("yyyy-dd-mm");
+      SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 
       sql = "INSERT INTO 예매내역 values (0, '"+성인예매매수+"', '"+결제금액+"', '"+포인트+"', TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd'), '"+id+"', '"+상영번호+"', '"+청소년예매매수+"')";
       stmt = conn.createStatement();
@@ -68,6 +68,7 @@
         %>
         <script>
           alert("<%=예매번호%>번\n <%=예매날짜%>\n 성인 : <%=성인예매매수%>명\n 청소년 : <%=청소년예매매수%>명");
+          location.href="main/main.jsp";
         </script>
         <%
       }
