@@ -47,7 +47,7 @@
             <input type="hidden" name="영화이름" value="<%=영화이름%>">
             <input type="hidden" name="개봉일" value="<%=개봉일%>">
             <input type="hidden" name="감독" value="<%=감독%>">
-            <input type="submit" value="예매">
+            <input type="submit" value="상영정보">
            </form>
            </td>
        </tr>

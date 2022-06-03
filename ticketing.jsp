@@ -9,7 +9,7 @@
 </head>
 <body>
   <%@ include file="dbconn.jsp" %>
-  <p>ticketing</p>
+  <p>상영정보</p>
     <%
     request.setCharacterEncoding("utf-8");
 
