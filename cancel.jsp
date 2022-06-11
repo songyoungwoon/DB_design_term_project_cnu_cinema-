@@ -54,6 +54,19 @@
     sql = "delete from 예매내역 where 예매번호 = '"+예매번호+"'";
     stmt = conn.createStatement();
     stmt.executeUpdate(sql);
+
+    // 예매좌석수 불러오기
+    sql = "select 예매좌석수 from 상영정보 where 상영번호 = '"+상영번호+"'";
+    stmt = conn.createStatement();
+    rs = stmt.executeQuery(sql);
+    while(rs.next()){
+      String 예매좌석수 = rs.getString("예매좌석수");
+      예매좌석수 = Integer.toString((Integer.parseInt(예매좌석수)-취소매수));
+      // 상영관 예매좌석수 업데이트
+      sql = "update 상영정보 set 예매좌석수 = '"+예매좌석수+"' where 상영번호 = '"+상영번호+"'";
+      stmt = conn.createStatement();
+      stmt.executeUpdate(sql);
+    }
   }
 %>
 <script>

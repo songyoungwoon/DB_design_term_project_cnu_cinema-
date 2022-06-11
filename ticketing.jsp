@@ -9,7 +9,11 @@
 </head>
 <body>
   <%@ include file="dbconn.jsp" %>
-  <p>상영정보</p>
+  <!-- 홈 버튼 -->
+  <p>
+    <button type='button' onclick="location.href='main/main.jsp';"><-</button>
+    상영정보
+  </p>
     <%
     request.setCharacterEncoding("utf-8");
 
@@ -47,17 +51,19 @@
     }
     %>
      </select>
-     날짜 : <input type="date" name="날짜" required> <input type="submit" value="검색"></p>
+     날짜 : <input type="date" name="날짜" required>
+     <input type="submit" value="검색"></p>
     </form>
     <!-- 지점 선택 끝 -->
 
     <!-- 상영관 불러오기 시작 -->
     <table>
     <%
+    out.println(날짜);
     // 해당 지점 영화 상영관 불러오기
     if (지점 != null && 지점 != "선택" && 날짜 != null){
       out.println(지점);
-      sql = "select distinct 상영번호, 상영관이름, 상영날짜, 예매좌석수 from 상영정보 where 지점='"+지점+"' and 영화이름='"+영화이름+"' and  감독='"+감독+"'";
+      sql = "select distinct 상영번호, 상영관이름, 상영날짜, 예매좌석수 from 상영정보 where 지점='"+지점+"' and 영화이름='"+영화이름+"' and  감독='"+감독+"' and to_date(to_char(상영날짜, 'yyyy-mm-dd'), 'yyyy-mm-dd') = to_date('"+날짜+"', 'yyyy-mm-dd') order by 상영관이름, 상영날짜";
       stmt = conn.createStatement();
       rs = stmt.executeQuery(sql);
       while(rs.next()){
@@ -67,6 +73,8 @@
         String 상영날짜 = rs.getString("상영날짜");
         String 예매좌석수 = rs.getString("예매좌석수");
         String 총좌석수 = "";
+        out.println(날짜);
+        out.println(상영날짜);
         String sql2 = "select 총좌석수 from 상영관 where 지점='"+지점+"' and 상영관이름='"+상영관이름+"'";
         Statement stmt2 = conn.createStatement();
         ResultSet rs2 = stmt2.executeQuery(sql2);
@@ -80,6 +88,7 @@
         <td><%=예매좌석수%></td>
         <td><%=총좌석수%></td>
         <%
+        // 예매 가능 여부 확인
         int 예매가능좌석수 = Integer.parseInt(총좌석수) - Integer.parseInt(예매좌석수);
         if (예매가능좌석수 > 0){
         %>

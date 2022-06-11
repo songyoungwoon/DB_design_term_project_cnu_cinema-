@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 <html>
 <head lang="ko">
@@ -22,16 +24,41 @@
     String 지점 = null;
     String 상영관이름 = null;
     String 상영관타입 = null;
+    String 상영날짜 = null;
 
     ResultSet rs = null;
     Statement stmt = null;
 
-    String sql = "select 지점, 상영관이름 from 상영정보 where 상영번호= '"+상영번호+"'";
+    String sql = "select 지점, 상영관이름, to_char(상영날짜, 'yyyymmddhh24miss') as 상영날짜 from 상영정보 where 상영번호= '"+상영번호+"'";
     stmt = conn.createStatement();
     rs = stmt.executeQuery(sql);
     while(rs.next()){
       지점 = rs.getString("지점");
       상영관이름 = rs.getString("상영관이름");
+      상영날짜 = rs.getString("상영날짜");
+
+      // 예매 가능 시간 확인
+      Date nowTime = new Date();
+      SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
+      String 현재시간 = sf.format(nowTime);
+      out.println(상영날짜);
+      out.println(현재시간);
+      int 연도차이 = Integer.parseInt(상영날짜.substring(0, 4)) - Integer.parseInt(현재시간.substring(0, 4));
+      int 월일차이 = Integer.parseInt(상영날짜.substring(4, 8)) - Integer.parseInt(현재시간.substring(4, 8));
+      int 시간차이 = Integer.parseInt(상영날짜.substring(8, 14)) - Integer.parseInt(현재시간.substring(8, 14));
+      out.println(연도차이);
+      out.println(월일차이);
+      out.println(시간차이);
+
+      // 예매 가능 시간이 아닐 때,
+      if(연도차이<0 || (연도차이==0 && 월일차이<0) || (연도차이==0 && 월일차이==0 && 시간차이<2000)){
+          %>
+          <script>
+            alert("예매가능시간이 아닙니다.");
+            history.back();
+          </script>
+          <%
+      }
       sql = "select 상영관타입 from 상영관 where 지점 = '"+지점+"' and 상영관이름 = '"+상영관이름+"'";
       stmt = conn.createStatement();
       rs = stmt.executeQuery(sql);

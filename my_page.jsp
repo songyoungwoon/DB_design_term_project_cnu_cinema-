@@ -7,9 +7,19 @@
   <title>Database SQL</title>
   <link rel="stylesheet" href="main/main.css">
 </head>
+<!-- 마이페이지 접속시, 기간이 지난 예매내역 관람내역으로 이동 -->
+<%
+  
+%>
+
 <body>
   <%@ include file="dbconn.jsp" %>
-  <p>마이페이지</p>
+  <!-- 홈 버튼 -->
+  <p>
+    <button type='button' onclick="location.href='main/main.jsp';"><-</button>
+    마이페이지
+  </p>
+
   <!-- 예매내역 불러오기 시작 -->
   <table id="t1">
    <p>
