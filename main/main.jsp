@@ -10,6 +10,11 @@
 <body>
   <%@ include file="../dbconn.jsp" %>
   <p>cnu cinema</p>
+  <!-- 상단바 -->
+  <p>
+      <button type='button' onclick="location.href='../my_page.jsp';">마이페이지</button>
+      <button type='button' onclick="location.href='../login/login.html';">로그아웃</button>
+  </p>
   <!-- 상영작품 불러오기 시작 -->
   <table id="t1">
    <p>
