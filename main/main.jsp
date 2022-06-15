@@ -19,6 +19,17 @@
   </p>
   <!-- 상영작품 불러오기 시작 -->
   <table id="t1">
+    <tr>
+      <th> 영화이름 </th>
+      <th> 개봉일 </th>
+      <th> 감독 </th>
+      <th> 장르 </th>
+      <th> 총상영시간 </th>
+      <th> 관람등급 </th>
+      <th> 현재 총 예매자수 </th>
+      <th> 누적관람객수 </th>
+      <th> 상영정보 </th>
+    </tr>
    <p>
      상영작품
      <form method="post" action="main.jsp">
@@ -86,6 +97,17 @@
 
   <!-- 상영예정작 불러오기 시작 -->
   <table id="t2">
+    <tr>
+      <th> 영화이름 </th>
+      <th> 개봉일 </th>
+      <th> 감독 </th>
+      <th> 장르 </th>
+      <th> 총상영시간 </th>
+      <th> 관람등급 </th>
+      <th> 예매자수 </th>
+      <th> 누적관람객수 </th>
+      <th> 상영정보 </th>
+    </tr>
    <p>
      상영예정작
      <form method="post" action="main.jsp">

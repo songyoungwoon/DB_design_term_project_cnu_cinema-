@@ -18,10 +18,17 @@
 
   if (pass.equals(match_pass)){
     //세션 유지 및 성공 페이지
-    session.setAttribute("id", id);
-    session.setAttribute("pass", pass);
-    response.sendRedirect("../main/main.jsp");
+    if(id.equals("1")){
+      // 관리자 접속
+      response.sendRedirect("../manager.jsp");
     }
+    else{
+      // 회원 접속
+      session.setAttribute("id", id);
+      session.setAttribute("pass", pass);
+      response.sendRedirect("../main/main.jsp");
+    }
+  }
   }
 %>
 <script>

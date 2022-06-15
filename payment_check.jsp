@@ -63,8 +63,8 @@
       총좌석수 = rs.getString("총좌석수");
       // 예매 가능 매수 계산
       예매가능매수 = Integer.parseInt(총좌석수) - Integer.parseInt(예매좌석수);
-      // 예매가능매수를 초과했을 때,
-      if(예매가능매수 < 총예매매수){
+      // 예매가능매수를 초과했을 때, 최대 10장
+      if(예매가능매수 < 총예매매수 || 10 < 총예매매수){
         %>
         <script>
           alert("예매가능매수를 초과하였습니다.");
@@ -88,6 +88,12 @@
 
         // 예매좌석수 update
         sql = "update 상영정보 set 예매좌석수 = '"+예매좌석수+"' where 상영번호 = '"+상영번호+"'";
+
+        stmt = conn.createStatement();
+        stmt.executeUpdate(sql);
+        // 포인트 차감
+        잔여포인트 = Integer.toString(Integer.parseInt(잔여포인트) - Integer.parseInt(포인트));
+        sql = "update 회원 set 포인트 = '"+잔여포인트+"' where 회원번호 = '"+id+"'";
         stmt = conn.createStatement();
         stmt.executeUpdate(sql);
 

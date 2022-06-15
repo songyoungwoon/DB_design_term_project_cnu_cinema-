@@ -14,6 +14,7 @@
     <button type='button' onclick="location.href='main/main.jsp';"><-</button>
     상영정보
   </p>
+
     <%
     request.setCharacterEncoding("utf-8");
 
@@ -58,11 +59,18 @@
 
     <!-- 상영관 불러오기 시작 -->
     <table>
+      <tr>
+        <th> 상영관 </th>
+        <th> 상영시간 </th>
+        <th> 예매자수 </th>
+        <th> 총좌석수 </th>
+        <th> 예매하기 </th>
+      </tr>
     <%
-    out.println(날짜);
     // 해당 지점 영화 상영관 불러오기
     if (지점 != null && 지점 != "선택" && 날짜 != null){
       out.println(지점);
+      out.println(날짜);
       sql = "select distinct 상영번호, 상영관이름, 상영날짜, 예매좌석수 from 상영정보 where 지점='"+지점+"' and 영화이름='"+영화이름+"' and  감독='"+감독+"' and to_date(to_char(상영날짜, 'yyyy-mm-dd'), 'yyyy-mm-dd') = to_date('"+날짜+"', 'yyyy-mm-dd') order by 상영관이름, 상영날짜";
       stmt = conn.createStatement();
       rs = stmt.executeQuery(sql);
@@ -73,8 +81,6 @@
         String 상영날짜 = rs.getString("상영날짜");
         String 예매좌석수 = rs.getString("예매좌석수");
         String 총좌석수 = "";
-        out.println(날짜);
-        out.println(상영날짜);
         String sql2 = "select 총좌석수 from 상영관 where 지점='"+지점+"' and 상영관이름='"+상영관이름+"'";
         Statement stmt2 = conn.createStatement();
         ResultSet rs2 = stmt2.executeQuery(sql2);
@@ -113,7 +119,6 @@
     %>
     </table>
     <!-- 상영관 불러오기 끝 -->
-
     <script>
       var selected = "";
       function myFunction(str) {
@@ -121,6 +126,5 @@
         selected = str;
       }
     </script>
-
 </body>
 </html>

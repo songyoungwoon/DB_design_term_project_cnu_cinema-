@@ -50,6 +50,21 @@
     stmt = conn.createStatement();
     stmt.executeUpdate(sql);
 
+    // 포인트 환불
+    // 회원 포인트 정보 불러오기
+    sql = "select 포인트 from 회원 where 회원번호 = '"+id+"'";
+    stmt = conn.createStatement();
+    rs = stmt.executeQuery(sql);
+    String 잔여포인트 = "";
+    while(rs.next()){
+      잔여포인트 = rs.getString("포인트");
+    }
+    잔여포인트 = Integer.toString(Integer.parseInt(잔여포인트) + Integer.parseInt(포인트결제금액));
+    // 포인트 update
+    sql = "update 회원 set 포인트 = '"+잔여포인트+"' where 회원번호 = '"+id+"'";
+    stmt = conn.createStatement();
+    stmt.executeUpdate(sql);
+
     // 예매내역 삭제
     sql = "delete from 예매내역 where 예매번호 = '"+예매번호+"'";
     stmt = conn.createStatement();
