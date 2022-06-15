@@ -20,8 +20,29 @@
     마이페이지
   </p>
 
+  <%
+    ResultSet rs = null;
+    Statement stmt = null;
+    request.setCharacterEncoding("utf-8");
+
+    String id = (String)session.getAttribute("id");
+    // 조회 날짜 설정
+    String 예매내역시작날짜 = request.getParameter("예매내역시작날짜");
+    String 예매내역종료날짜 = request.getParameter("예매내역종료날짜");
+    String 관람내역시작날짜 = request.getParameter("관람내역시작날짜");
+    String 관람내역종료날짜 = request.getParameter("관람내역종료날짜");
+    String 취소내역시작날짜 = request.getParameter("취소내역시작날짜");
+    String 취소내역종료날짜 = request.getParameter("취소내역종료날짜");
+  %>
   <!-- 예매내역 불러오기 시작 -->
   <table id="t1">
+    <p>예매내역
+    <form method="post" action="my_page.jsp">
+      시작날짜 : <input type="date" name="예매내역시작날짜" required>
+      종료날짜 : <input type="date" name="예매내역종료날짜" required>
+      <input type="submit" value="검색">
+    </form>
+    </p>
     <tr>
       <th> 예매번호 </th>
       <th> 영화이름 </th>
@@ -32,19 +53,16 @@
       <th> 포인트결제금액 </th>
       <th> 예매취소하기 </th>
     </tr>
-   <p>
-     예매내역
      <%
      // 예매내역 불러오기
-     ResultSet rs = null;
-     Statement stmt = null;
-
-     String id = (String)session.getAttribute("id");
-
      String sql = "select * from 예매내역 where 회원번호 = '"+id+"'";
+     // 조회 날짜에 따른 쿼리문 추가
+     if(예매내역시작날짜 != null && 예매내역종료날짜 != null){
+       sql += " and 예매날짜 between to_date('"+예매내역시작날짜+"', 'yyyy-mm-dd') and to_date('"+예매내역종료날짜+"', 'yyyy-mm-dd') + 1";
+     }
+     sql += " order by 예매날짜 desc";
      stmt = conn.createStatement();
      rs = stmt.executeQuery(sql);
-
      while(rs.next()){
        String 예매번호 = rs.getString("예매번호");
        String 성인예매매수 = rs.getString("성인예매매수");
@@ -81,12 +99,19 @@
      <%
       }
      %>
-   </p>
+
   </table>
   <!-- 예매내역 불러오기 끝 -->
 
   <!-- 관람내역 불러오기 시작 -->
   <table id="t2">
+    <p>관람내역
+    <form method="post" action="my_page.jsp">
+      시작날짜 : <input type="date" name="관람내역시작날짜" required>
+      종료날짜 : <input type="date" name="관람내역종료날짜" required>
+      <input type="submit" value="검색">
+    </form>
+    </p>
     <tr>
       <th> 영화이름 </th>
       <th> 성인예매매수 </th>
@@ -95,14 +120,16 @@
       <th> 상영관이름 </th>
       <th> 관람날짜 </th>
     </tr>
-   <p>
-     관람내역
      <%
      // 관람내역 불러오기
      sql = "select * from 관람내역 where 회원번호 = '"+id+"'";
+     // 조회 날짜에 따른 쿼리문 추가
+     if(관람내역시작날짜 != null && 관람내역종료날짜 != null){
+       sql += " and 관람날짜 between to_date('"+관람내역시작날짜+"', 'yyyy-mm-dd') and to_date('"+관람내역종료날짜+"', 'yyyy-mm-dd') + 1";
+     }
+     sql += " order by 관람날짜 desc";
      stmt = conn.createStatement();
      rs = stmt.executeQuery(sql);
-
      while(rs.next()){
        String 관람번호 = rs.getString("관람번호");
        String 관람날짜 = rs.getString("관람날짜");
@@ -124,12 +151,18 @@
      <%
       }
      %>
-   </p>
   </table>
   <!-- 관람내역 불러오기 끝 -->
 
   <!-- 취소내역 불러오기 시작 -->
   <table id="t3">
+    <p>취소내역
+    <form method="post" action="my_page.jsp">
+      시작날짜 : <input type="date" name="취소내역시작날짜" required>
+      종료날짜 : <input type="date" name="취소내역종료날짜" required>
+      <input type="submit" value="검색">
+    </form>
+    </p>
     <tr>
       <th> 영화이름 </th>
       <th> 취소매수 </th>
@@ -138,14 +171,16 @@
       <th> 지점 </th>
       <th> 취소날짜 </th>
     </tr>
-   <p>
-     취소내역
      <%
      // 취소내역 불러오기
      sql = "select * from 취소내역 where 회원번호 = '"+id+"'";
+     // 조회 날짜에 따른 쿼리문 추가
+     if(취소내역시작날짜 != null && 취소내역종료날짜 != null){
+       sql += " and 취소날짜 between to_date('"+취소내역시작날짜+"', 'yyyy-mm-dd') and to_date('"+취소내역종료날짜+"', 'yyyy-mm-dd') + 1";
+     }
+     sql += " order by 취소날짜 desc";
      stmt = conn.createStatement();
      rs = stmt.executeQuery(sql);
-
      while(rs.next()){
        String 취소번호 = rs.getString("취소번호");
        String 취소매수 = rs.getString("취소매수");
@@ -165,8 +200,11 @@
        </tr>
      <%
       }
+
+      if(rs != null) rs.close();
+      if(stmt != null) stmt.close();
+      if(conn != null) conn.close();
      %>
-   </p>
   </table>
   <!-- 취소내역 불러오기 끝 -->
 

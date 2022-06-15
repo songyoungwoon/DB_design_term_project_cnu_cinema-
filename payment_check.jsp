@@ -123,4 +123,7 @@
       <%
     }
   }
+  if(rs != null) rs.close();
+  if(stmt != null) stmt.close();
+  if(conn != null) conn.close();
 %>

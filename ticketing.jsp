@@ -81,9 +81,9 @@
         String 상영날짜 = rs.getString("상영날짜");
         String 예매좌석수 = rs.getString("예매좌석수");
         String 총좌석수 = "";
-        String sql2 = "select 총좌석수 from 상영관 where 지점='"+지점+"' and 상영관이름='"+상영관이름+"'";
-        Statement stmt2 = conn.createStatement();
-        ResultSet rs2 = stmt2.executeQuery(sql2);
+        sql = "select 총좌석수 from 상영관 where 지점='"+지점+"' and 상영관이름='"+상영관이름+"'";
+        stmt = conn.createStatement();
+        ResultSet rs2 = stmt.executeQuery(sql);
         while(rs2.next()){
          총좌석수 = rs2.getString("총좌석수");
       }
@@ -116,6 +116,9 @@
       <%
       }
     }
+    if(rs != null) rs.close();
+    if(stmt != null) stmt.close();
+    if(conn != null) conn.close();
     %>
     </table>
     <!-- 상영관 불러오기 끝 -->

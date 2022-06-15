@@ -79,6 +79,9 @@
       성인 10,000원, 청소년 8,000원</p>
       <%
     }
+    if(rs != null) rs.close();
+    if(stmt != null) stmt.close();
+    if(conn != null) conn.close();
     %>
     <form method="post" action="payment_check.jsp">
       <p>예매 매수(성인) : <input type="text" name="성인예매매수" required></p>

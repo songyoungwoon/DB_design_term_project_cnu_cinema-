@@ -12,7 +12,7 @@
   <script>
     setTimeout(function(){
         location.reload();
-    },3000); // 3000밀리초 = 3초
+    },60000); // 3000밀리초 = 3초
   </script>
 </head>
 
@@ -86,9 +86,12 @@
           sql = "delete from 예매내역 where 예매번호 = '"+예매번호+"'";
           stmt = conn.createStatement();
           stmt.executeUpdate(sql);
-          // 상영정보의 예매자수 수정?
+          // 상영정보의 삭제
       }
 
     }
   }
+  if(rs != null) rs.close();
+  if(stmt != null) stmt.close();
+  if(conn != null) conn.close();
 %>

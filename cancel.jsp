@@ -83,6 +83,10 @@
       stmt.executeUpdate(sql);
     }
   }
+
+  if(rs != null) rs.close();
+  if(stmt != null) stmt.close();
+  if(conn != null) conn.close();
 %>
 <script>
   location.href="my_page.jsp";

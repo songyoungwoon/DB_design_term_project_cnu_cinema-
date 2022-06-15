@@ -30,6 +30,9 @@
     }
   }
   }
+  if(rs != null) rs.close();
+  if(stmt != null) stmt.close();
+  if(conn != null) conn.close();
 %>
 <script>
   alert("회원번호 또는 비밀번호가 잘못되었습니다.");
