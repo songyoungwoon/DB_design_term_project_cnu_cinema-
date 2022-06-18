@@ -2,6 +2,7 @@
 <%@ page import="java.sql.*" %>
 
 <%
+  // oracle database connection
   Connection conn=null;
   String url ="jdbc:oracle:thin:@localhost:1521:orcl";
   String user ="hr";

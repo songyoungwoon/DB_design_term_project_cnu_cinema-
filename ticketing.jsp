@@ -14,8 +14,8 @@
     <button type='button' onclick="location.href='main/main.jsp';"><-</button>
     상영정보
   </p>
-
     <%
+    // 영화의 상영 정보를 조회하기 위한 jsp
     request.setCharacterEncoding("utf-8");
 
     String 영화이름 = request.getParameter("영화이름");
@@ -28,7 +28,7 @@
     String 날짜 = request.getParameter("날짜");
     %>
 
-    <!-- 지점 선택 시작 -->
+    <!-- 지점 및 날짜 선택 시작 : 지점 및 조회 날짜 선택 -->
     <p> 영화 : <%=영화이름%></p>
     <form method="post" action="ticketing.jsp">
      <input type="hidden" name="영화이름" value="<%=영화이름%>">
@@ -39,7 +39,7 @@
     <%
     ResultSet rs = null;
     Statement stmt = null;
-    // 지점 불러오기
+    // 지점을 불러오기 위한 sql문
     String sql = "select distinct 지점 from 상영관";
     stmt = conn.createStatement();
     rs = stmt.executeQuery(sql);
@@ -47,15 +47,18 @@
       // 지점 하나씩 불러오기
       String select_지점 = rs.getString("지점");
     %>
+      <!-- option에 각 지점 표시 -->
       <option value=<%=select_지점%>><%=select_지점%></option>
     <%
     }
     %>
      </select>
+     <!-- 조회 날짜 선택 : 현재 날짜로부터 7일 이내의 날짜만 조회 가능 -->
      날짜 : <input type="date" id="select_Date" name="날짜" required>
      <input type="submit" value="검색"></p>
     </form>
-    <!-- 지점 선택 끝 -->
+    <!-- 지점 및 날짜 선택 끝 -->
+
 
     <!-- 상영관 불러오기 시작 -->
     <table>
@@ -67,10 +70,11 @@
         <th> 예매하기 </th>
       </tr>
     <%
-    // 해당 지점 영화 상영관 불러오기
+    // 선택한 지점과 날짜의 영화 상영정보 불러오기
     if (지점 != null && 지점 != "선택" && 날짜 != null){
       out.println(지점);
       out.println(날짜);
+      // 상영정보를 불러오기 위한 sql문
       sql = "select distinct 상영번호, 상영관이름, 상영날짜, 예매좌석수 from 상영정보 where 지점='"+지점+"' and 영화이름='"+영화이름+"' and  감독='"+감독+"' and to_date(to_char(상영날짜, 'yyyy-mm-dd'), 'yyyy-mm-dd') = to_date('"+날짜+"', 'yyyy-mm-dd') order by 상영관이름, 상영날짜";
       stmt = conn.createStatement();
       rs = stmt.executeQuery(sql);
@@ -81,6 +85,7 @@
         String 상영날짜 = rs.getString("상영날짜");
         String 예매좌석수 = rs.getString("예매좌석수");
         String 총좌석수 = "";
+        // 총 좌석수를 불러오기 위한 sql문
         sql = "select 총좌석수 from 상영관 where 지점='"+지점+"' and 상영관이름='"+상영관이름+"'";
         stmt = conn.createStatement();
         ResultSet rs2 = stmt.executeQuery(sql);
@@ -88,6 +93,7 @@
          총좌석수 = rs2.getString("총좌석수");
       }
       %>
+      <!-- 상영정보 표시 -->
       <tr>
         <td><%=상영관이름%></td>
         <td><%=상영날짜%></td>
@@ -96,6 +102,7 @@
         <%
         // 예매 가능 여부 확인
         int 예매가능좌석수 = Integer.parseInt(총좌석수) - Integer.parseInt(예매좌석수);
+        // 예매가 가능할 때, 예매 버튼 활성화
         if (예매가능좌석수 > 0){
         %>
         <td>
@@ -106,6 +113,7 @@
         </td>
         <%
         }
+        // 예매가 불가능 할 때, 매진 표시
         else{
         %>
         <p>매진</p>
@@ -116,6 +124,8 @@
       <%
       }
     }
+
+    // conn 종료
     if(rs != null) rs.close();
     if(stmt != null) stmt.close();
     if(conn != null) conn.close();

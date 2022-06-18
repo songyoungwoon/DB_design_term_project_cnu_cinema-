@@ -4,20 +4,26 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ include file="dbconn.jsp" %>
 <%
+  // 예매 취소를 위한 jsp
   request.setCharacterEncoding("utf-8");
 
+  // id 세션 획득
   String id = (String)session.getAttribute("id");
-
+  // 예매번호를 form으로 획득
   String 예매번호 = request.getParameter("예매번호");
 
   ResultSet rs = null;
   Statement stmt = null;
 
+  // 예매내역을 불러오기 위한 sql문
   String sql = "select * from 예매내역 where 회원번호 = '"+id+"' and 예매번호 = '"+예매번호+"'";
   stmt = conn.createStatement();
   rs = stmt.executeQuery(sql);
+
+  // 결제 금액을 저장할 변수
   String 현금결제금액 = "";
   String 포인트결제금액 = "";
+  // 예매 번호에 해당하는 예매내역 불러오기
   while(rs.next()){
     // 취소내역에 들어갈 예매내역 불러오기
     String 성인예매매수 = rs.getString("성인예매매수");
@@ -32,9 +38,11 @@
     String 영화이름 = "";
     String 개봉일 = "";
     String 감독 = "";
+    // 상영정보를 불러오기 위한 sql문
     sql = "select 지점, 상영관이름, 영화이름, 개봉일, 감독 from 상영정보 where 상영번호 = '"+상영번호+"'";
     stmt = conn.createStatement();
     rs = stmt.executeQuery(sql);
+    // 상영정보 불러오기
     while(rs.next()){
       지점 = rs.getString("지점");
       상영관이름 = rs.getString("상영관이름");
@@ -61,6 +69,7 @@
     while(rs.next()){
       잔여포인트 = rs.getString("포인트");
     }
+    // 잔여 포인트 계산
     잔여포인트 = Integer.toString(Integer.parseInt(잔여포인트) + Integer.parseInt(포인트결제금액));
     // 포인트 update
     sql = "update 회원 set 포인트 = '"+잔여포인트+"' where 회원번호 = '"+id+"'";
@@ -72,24 +81,27 @@
     stmt = conn.createStatement();
     stmt.executeUpdate(sql);
 
-    // 예매좌석수 불러오기
+    // 상영 정보의 예매좌석수 update
+    // 예매좌석수 불러오는 sql문
     sql = "select 예매좌석수 from 상영정보 where 상영번호 = '"+상영번호+"'";
     stmt = conn.createStatement();
     rs = stmt.executeQuery(sql);
     while(rs.next()){
       String 예매좌석수 = rs.getString("예매좌석수");
       예매좌석수 = Integer.toString((Integer.parseInt(예매좌석수)-취소매수));
-      // 상영관 예매좌석수 업데이트
+      // 상영관 예매좌석수 업데이트 sql문
       sql = "update 상영정보 set 예매좌석수 = '"+예매좌석수+"' where 상영번호 = '"+상영번호+"'";
       stmt = conn.createStatement();
       stmt.executeUpdate(sql);
     }
   }
+  // conn 종료
   if(rs != null) rs.close();
   if(stmt != null) stmt.close();
   if(conn != null) conn.close();
 %>
 <script>
+  // 환불 금액 alert
   alert("현금 결제 : "+<%out.println(현금결제금액);%>+"\n포인트 결제 : "+<%out.println(포인트결제금액);%>+"\n환불되었습니다.");
   location.href="my_page.jsp";
 </script>
