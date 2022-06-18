@@ -74,7 +74,7 @@
       // 상영시간이 지났을 때,
       if(연도차이<0 || (연도차이==0 && 월일차이<0) || (연도차이==0 && 월일차이==0 && 시간차이<0)){
           // 관람내역으로 이동
-          sql = "insert into 관람내역 values(0, to_date('"+상영날짜+"', 'yyyy-mm-dd hh24:mi:ss'), "+회원번호+", '"+영화이름+"', to_date('"+개봉일+"', 'yyyy-mm-dd hh24:mi:ss'), '"+감독+"', '"+지점+"', '"+상영관이름+"', "+성인예매매수+", "+청소년예매매수+" )";
+          sql = "insert into 관람내역 values(0, "+성인예매매수+", "+청소년예매매수+", to_date('"+상영날짜+"', 'yyyy-mm-dd hh24:mi:ss'), "+회원번호+", '"+영화이름+"', to_date('"+개봉일+"', 'yyyy-mm-dd hh24:mi:ss'), '"+감독+"', '"+지점+"', '"+상영관이름+"' )";
           stmt = conn.createStatement();
           stmt.executeUpdate(sql);
           // 포인트 5% 적립

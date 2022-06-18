@@ -82,7 +82,7 @@
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 
         // 예매내역 insert
-        sql = "INSERT INTO 예매내역 values (0, '"+성인예매매수+"', '"+결제금액+"', '"+포인트+"', TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd'), '"+id+"', '"+상영번호+"', '"+청소년예매매수+"')";
+        sql = "INSERT INTO 예매내역 values (0, '"+성인예매매수+"', '"+청소년예매매수+"', '"+결제금액+"', '"+포인트+"', TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd'), '"+id+"', '"+상영번호+"')";
         stmt = conn.createStatement();
         stmt.executeUpdate(sql);
 
