@@ -57,6 +57,9 @@
       <th> 영화이름 </th>
       <th> 성인예매매수 </th>
       <th> 청소년예매매수 </th>
+      <th> 지점 </th>
+      <th> 상영관 </th>
+      <th> 상영시간 </th>
       <th> 예매날짜 </th>
       <th> 현금결제금액 </th>
       <th> 포인트결제금액 </th>
@@ -81,12 +84,19 @@
        String 청소년예매매수 = rs.getString("청소년예매매수");
        String 상영번호 = rs.getString("상영번호");
        String 영화이름 = null;
+       String 지점 = null;
+       String 상영관이름 = null;
+       String 상영날짜 = null;
 
-       String sql2 = "select 영화이름 from 상영정보 where 상영번호 = '"+상영번호+"'";
+       String sql2 = "select 영화이름, 지점, 상영관이름, 상영날짜 from 상영정보 where 상영번호 = '"+상영번호+"'";
        Statement stmt2 = conn.createStatement();
        ResultSet rs2 = stmt2.executeQuery(sql2);
        while(rs2.next()){
          영화이름 = rs2.getString("영화이름");
+         지점 = rs2.getString("지점");
+         상영관이름 = rs2.getString("상영관이름");
+         상영날짜 = rs2.getString("상영날짜");
+
        }
 
      %>
@@ -95,6 +105,9 @@
          <td><%=영화이름%></td>
          <td><%=성인예매매수%></td>
          <td><%=청소년예매매수%></td>
+         <td><%=지점%></td>
+         <td><%=상영관이름%></td>
+         <td><%=상영날짜%></td>
          <td><%=예매날짜%></td>
          <td><%=현금결제금액%></td>
          <td><%=포인트결제금액%></td>
