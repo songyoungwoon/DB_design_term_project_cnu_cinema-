@@ -26,13 +26,22 @@
     request.setCharacterEncoding("utf-8");
 
     String id = (String)session.getAttribute("id");
-    // 조회 날짜 설정
+    // 조회 시작 및 종료 날짜 초기화
     String 예매내역시작날짜 = request.getParameter("예매내역시작날짜");
     String 예매내역종료날짜 = request.getParameter("예매내역종료날짜");
     String 관람내역시작날짜 = request.getParameter("관람내역시작날짜");
     String 관람내역종료날짜 = request.getParameter("관람내역종료날짜");
     String 취소내역시작날짜 = request.getParameter("취소내역시작날짜");
     String 취소내역종료날짜 = request.getParameter("취소내역종료날짜");
+
+    // 보유 포인트 조회
+    String sql = "select * from 회원 where 회원번호='"+id+"'";
+    stmt = conn.createStatement();
+    rs = stmt.executeQuery(sql);
+    while(rs.next()){
+      out.println("보유 포인트 : " + rs.getString("포인트"));
+    }
+
   %>
   <!-- 예매내역 불러오기 시작 -->
   <table id="t1">
@@ -55,7 +64,7 @@
     </tr>
      <%
      // 예매내역 불러오기
-     String sql = "select * from 예매내역 where 회원번호 = '"+id+"'";
+     sql = "select * from 예매내역 where 회원번호 = '"+id+"'";
      // 조회 날짜에 따른 쿼리문 추가
      if(예매내역시작날짜 != null && 예매내역종료날짜 != null){
        sql += " and 예매날짜 between to_date('"+예매내역시작날짜+"', 'yyyy-mm-dd') and to_date('"+예매내역종료날짜+"', 'yyyy-mm-dd') + 1";

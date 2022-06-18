@@ -26,8 +26,8 @@
       <th> 장르 </th>
       <th> 총상영시간 </th>
       <th> 관람등급 </th>
-      <th> 현재 총 예매자수 </th>
-      <th> 누적관람객수 </th>
+      <th> 현재 예매자수 </th>
+      <th> 누적 관람객수 </th>
       <th> 상영정보 </th>
     </tr>
    <p>
@@ -53,7 +53,8 @@
      SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 
 
-     String sql = "select m.영화이름, to_char(m.개봉일, 'yyyy-mm-dd') as 개봉일, m.감독, m.장르, m.총상영시간, m.관람등급, nvl((select sum(예매좌석수) from 상영정보 where 영화이름 = m.영화이름 group by 영화이름, 개봉일, 감독), 0) as 예매수, nvl((select sum(성인예매매수)+sum(청소년예매매수) from 관람내역 where 영화이름 = m.영화이름 group by 영화이름, 개봉일, 감독), 0) as 누적관객수 from 영화 m where 개봉일 + 10 > TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd') and 개봉일 < TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd') ";
+     String sql = "select m.영화이름, to_char(m.개봉일, 'yyyy-mm-dd') as 개봉일, m.감독, m.장르, m.총상영시간, m.관람등급, nvl((select sum(예매좌석수) from 상영정보 where 영화이름 = m.영화이름 group by 영화이름, 개봉일, 감독), 0) as 예매수, nvl((select sum(성인예매매수)+sum(청소년예매매수) from 관람내역 where 영화이름 = m.영화이름 group by 영화이름, 개봉일, 감독), 0) as 누적관객수 from 영화 m ";
+     sql += "where 개봉일 + 10 > TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd') and 개봉일 <= TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd') ";
      if(상영작품정렬 != null){
        sql += " order by '"+상영작품정렬+"'";
      }
@@ -104,8 +105,8 @@
       <th> 장르 </th>
       <th> 총상영시간 </th>
       <th> 관람등급 </th>
-      <th> 예매자수 </th>
-      <th> 누적관람객수 </th>
+      <th> 현재 예매자수 </th>
+      <th> 누적 관람객수 </th>
       <th> 상영정보 </th>
     </tr>
    <p>

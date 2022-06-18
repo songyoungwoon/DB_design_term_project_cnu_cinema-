@@ -52,7 +52,7 @@
     }
     %>
      </select>
-     날짜 : <input type="date" name="날짜" required>
+     날짜 : <input type="date" id="select_Date" name="날짜" required>
      <input type="submit" value="검색"></p>
     </form>
     <!-- 지점 선택 끝 -->
@@ -122,12 +122,13 @@
     %>
     </table>
     <!-- 상영관 불러오기 끝 -->
+
+    <!--현재 날짜로부터 7일 이내 영화만 예매 가능 -->
     <script>
-      var selected = "";
-      function myFunction(str) {
-        alert(str + " 을 선택하였습니다.");
-        selected = str;
-      }
+      var now_utc = Date.now();
+      var timeoff = new Date().getTimezoneOffset()*60000*16;
+      var today = new Date(now_utc-timeoff).toISOString().split("T")[0];
+      document.getElementById("select_Date").setAttribute("max", today);
     </script>
 </body>
 </html>

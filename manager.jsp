@@ -12,7 +12,7 @@
   <script>
     setTimeout(function(){
         location.reload();
-    },60000); // 3000밀리초 = 3초
+    },30000); // 3000밀리초 = 3초
   </script>
 </head>
 
@@ -87,6 +87,9 @@
           stmt = conn.createStatement();
           stmt.executeUpdate(sql);
           // 상영정보의 삭제
+          sql = "delete from 상영정보 where 상영번호 = '"+상영번호+"'";
+          stmt = conn.createStatement();
+          stmt.executeUpdate(sql);
       }
 
     }
