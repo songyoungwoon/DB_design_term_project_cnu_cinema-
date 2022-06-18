@@ -86,10 +86,9 @@
           sql = "delete from 예매내역 where 예매번호 = '"+예매번호+"'";
           stmt = conn.createStatement();
           stmt.executeUpdate(sql);
-          // 상영정보의 삭제
-          sql = "delete from 상영정보 where 상영번호 = '"+상영번호+"'";
-          stmt = conn.createStatement();
-          stmt.executeUpdate(sql);
+          // 상영정보의 예매자수 관리
+
+
       }
 
     }

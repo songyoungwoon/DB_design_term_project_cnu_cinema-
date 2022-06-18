@@ -23,6 +23,7 @@
       <th> 영화이름 </th>
       <th> 개봉일 </th>
       <th> 감독 </th>
+      <th> 출연자 </th>
       <th> 장르 </th>
       <th> 총상영시간 </th>
       <th> 관람등급 </th>
@@ -47,6 +48,7 @@
 
      // 상영작품 불러오기
      ResultSet rs = null;
+     ResultSet rs2 = null;
      Statement stmt = null;
 
      Date nowTime = new Date();
@@ -56,7 +58,12 @@
      String sql = "select m.영화이름, to_char(m.개봉일, 'yyyy-mm-dd') as 개봉일, m.감독, m.장르, m.총상영시간, m.관람등급, nvl((select sum(예매좌석수) from 상영정보 where 영화이름 = m.영화이름 group by 영화이름, 개봉일, 감독), 0) as 예매수, nvl((select sum(성인예매매수)+sum(청소년예매매수) from 관람내역 where 영화이름 = m.영화이름 group by 영화이름, 개봉일, 감독), 0) as 누적관객수 from 영화 m ";
      sql += "where 개봉일 + 10 > TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd') and 개봉일 <= TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd') ";
      if(상영작품정렬 != null){
-       sql += " order by '"+상영작품정렬+"'";
+       if(상영작품정렬.equals("예매수")){
+         sql += " order by "+상영예정작품정렬+" desc";
+       }
+       else{
+         sql += " order by "+상영작품정렬+"";
+       }
      }
      stmt = conn.createStatement();
      rs = stmt.executeQuery(sql);
@@ -70,11 +77,21 @@
        String 관람등급 = rs.getString("관람등급");
        String 예매수 = rs.getString("예매수");
        String 누적관객수 = rs.getString("누적관객수");
+       String 출연자 = "";
+
+       // 영화출연자 불러오기
+       sql = "select 출연자이름 from 영화출연자 where 영화이름='"+영화이름+"' and 개봉일='"+개봉일+"' and 감독='"+감독+"'";
+       stmt = conn.createStatement();
+       rs2 = stmt.executeQuery(sql);
+       while(rs2.next()){
+         출연자 += rs2.getString("출연자이름")+". ";
+       }
      %>
        <tr>
          <td><%=영화이름%></td>
          <td><%=개봉일%></td>
          <td><%=감독%></td>
+         <td><%=출연자%></td>
          <td><%=장르%></td>
          <td><%=총상영시간%></td>
          <td><%=관람등급%></td>
@@ -102,6 +119,7 @@
       <th> 영화이름 </th>
       <th> 개봉일 </th>
       <th> 감독 </th>
+      <th> 출연자 </th>
       <th> 장르 </th>
       <th> 총상영시간 </th>
       <th> 관람등급 </th>
@@ -123,7 +141,12 @@
 
      sql = "select m.영화이름, to_char(m.개봉일, 'yyyy-mm-dd') as 개봉일, m.감독, m.장르, m.총상영시간, m.관람등급, nvl((select sum(예매좌석수) from 상영정보 where 영화이름 = m.영화이름 group by 영화이름, 개봉일, 감독), 0) as 예매수, nvl((select sum(성인예매매수)+sum(청소년예매매수) from 관람내역 where 영화이름 = m.영화이름 group by 영화이름, 개봉일, 감독), 0) as 누적관객수 from 영화 m where 개봉일 > TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd')";
      if(상영예정작품정렬 != null){
-       sql += " order by '"+상영예정작품정렬+"'";
+       if(상영예정작품정렬.equals("예매수")){
+         sql += " order by "+상영예정작품정렬+" desc";
+       }
+       else{
+         sql += " order by "+상영예정작품정렬+"";
+       }
      }
      stmt = conn.createStatement();
      rs = stmt.executeQuery(sql);
@@ -137,11 +160,21 @@
        String 관람등급 = rs.getString("관람등급");
        String 예매수 = rs.getString("예매수");
        String 누적관객수 = rs.getString("누적관객수");
+       String 출연자 = "";
+
+       // 영화출연자 불러오기
+       sql = "select 출연자이름 from 영화출연자 where 영화이름='"+영화이름+"' and 개봉일='"+개봉일+"' and 감독='"+감독+"'";
+       stmt = conn.createStatement();
+       rs2 = stmt.executeQuery(sql);
+       while(rs2.next()){
+         출연자 += rs2.getString("출연자이름")+". ";
+       }
      %>
        <tr>
          <td><%=영화이름%></td>
          <td><%=개봉일%></td>
          <td><%=감독%></td>
+         <td><%=출연자%></td>
          <td><%=장르%></td>
          <td><%=총상영시간%></td>
          <td><%=관람등급%></td>
