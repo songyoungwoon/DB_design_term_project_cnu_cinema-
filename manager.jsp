@@ -87,7 +87,14 @@
           stmt = conn.createStatement();
           stmt.executeUpdate(sql);
           // 상영정보의 예매자수 관리
-
+          sql = "select * from 예매내역 where 상영번호 = '"+상영번호+"'";
+          stmt = conn.createStatement();
+          rs2 = stmt.executeQuery(sql);
+          if(!rs2.next()){
+            sql = "delete from 상영정보 where 상영번호 ='"+상영번호+"'";
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+          }
 
       }
 

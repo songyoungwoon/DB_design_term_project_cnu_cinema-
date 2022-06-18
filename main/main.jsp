@@ -59,7 +59,7 @@
      sql += "where 개봉일 + 10 > TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd') and 개봉일 <= TO_DATE('"+sf.format(nowTime)+"', 'yyyy-mm-dd') ";
      if(상영작품정렬 != null){
        if(상영작품정렬.equals("예매수")){
-         sql += " order by "+상영예정작품정렬+" desc";
+         sql += " order by "+상영작품정렬+" desc";
        }
        else{
          sql += " order by "+상영작품정렬+"";
@@ -195,6 +195,12 @@
    </p>
   </table>
   <!-- 상영예정작 불러오기 끝 -->
+  <%
+  if(rs != null) rs.close();
+  if(rs2 != null) rs2.close();
+  if(stmt != null) stmt.close();
+  if(conn != null) conn.close();
+  %>
 
 </body>
 </html>
