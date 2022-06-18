@@ -16,12 +16,14 @@
   String sql = "select * from 예매내역 where 회원번호 = '"+id+"' and 예매번호 = '"+예매번호+"'";
   stmt = conn.createStatement();
   rs = stmt.executeQuery(sql);
+  String 현금결제금액 = "";
+  String 포인트결제금액 = "";
   while(rs.next()){
     // 취소내역에 들어갈 예매내역 불러오기
     String 성인예매매수 = rs.getString("성인예매매수");
     String 청소년예매매수 = rs.getString("청소년예매매수");
-    String 현금결제금액 = rs.getString("현금결제금액");
-    String 포인트결제금액 = rs.getString("포인트결제금액");
+    현금결제금액 = rs.getString("현금결제금액");
+    포인트결제금액 = rs.getString("포인트결제금액");
     String 상영번호 = rs.getString("상영번호");
 
     // 취소내역에 들어갈 지점 및 영화정보 불러오기
@@ -83,11 +85,11 @@
       stmt.executeUpdate(sql);
     }
   }
-
   if(rs != null) rs.close();
   if(stmt != null) stmt.close();
   if(conn != null) conn.close();
 %>
 <script>
+  alert("현금 결제 : "+<%out.println(현금결제금액);%>+"\n포인트 결제 : "+<%out.println(포인트결제금액);%>+"\n환불되었습니다.");
   location.href="my_page.jsp";
 </script>
