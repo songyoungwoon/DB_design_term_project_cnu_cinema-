@@ -124,7 +124,6 @@
       <%
       }
     }
-
     // conn 종료
     if(rs != null) rs.close();
     if(stmt != null) stmt.close();
